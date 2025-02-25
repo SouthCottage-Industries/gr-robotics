@@ -9,3 +9,6 @@ Our first hardware target is the GPIO of the Raspberri Pi 2 - 4. This includes g
 
 ## FT232H
 The second hardware target is a general purpose USB to GPIO board to enable rapid prototyping on computers without integrated GPIO.
+
+# License
+Like this project's parent, GNU Radio, this is licensed under GNU General Public License (GPL) Version 3.
