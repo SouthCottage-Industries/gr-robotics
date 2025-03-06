@@ -21,7 +21,7 @@ class gpo(gr.sync_block):
     def __init__(self, platform="pi3", gpio_pin=11):
         gr.sync_block.__init__(self,
             name="gpio",
-            in_sig=[<+numpy.bool+>, ],
+            in_sig=[numpy.bool, ],
             out_sig=None)
         gpop = gpio_pin
         GPIO.setmode(GPIO.BOARD)
