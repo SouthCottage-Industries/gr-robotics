@@ -24,7 +24,7 @@ class gpo_pwm(gr.sync_block):
     def __init__(self, platform="pi3", gpio_pin=11, frequency=100):
         gr.sync_block.__init__(self,
             name="gpo_pwm",
-            in_sig=[<+numpy.float32+>, ],
+            in_sig=[numpy.float32, ],
             out_sig=None)
         gpop = gpio_pin
         freq = frequency

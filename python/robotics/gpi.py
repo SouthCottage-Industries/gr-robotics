@@ -21,7 +21,7 @@ class gpi(gr.sync_block):
         gr.sync_block.__init__(self,
             name="gpi",
             in_sig=None,
-            out_sig=[<+numpy.bool+>, ])
+            out_sig=[numpy.bool, ])
         gpip = gpio_pin
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(gpi, GPIO.IN)
