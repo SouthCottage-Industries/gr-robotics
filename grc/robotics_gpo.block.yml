@@ -13,13 +13,14 @@ templates:
 #     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
 #     * default
 parameters:
-- id: parametername_replace_me
-  label: FIX ME:
+- id: platform
+  label: Platform
   dtype: string
-  default: You need to fill in your grc/robotics_gpo.block.yaml
-#- id: ...
-#  label: ...
-#  dtype: ...
+  default: "pi3"
+- id: gpio_pin
+  label: GPIO Pin
+  dtype: int
+  default: 11
 
 #  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
 #  Keys include:
@@ -29,9 +30,9 @@ parameters:
 #      * vlen (optional - data stream vector length. Default is 1)
 #      * optional (optional - set to 1 for optional inputs. Default is 0)
 inputs:
-#- label: ...
-#  domain: ...
-#  dtype: ...
+- label: in_sig
+  domain: stream
+  dtype: int
 #  vlen: ...
 #  optional: ...
 
