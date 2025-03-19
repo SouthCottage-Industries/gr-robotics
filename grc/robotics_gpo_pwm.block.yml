@@ -4,7 +4,7 @@ category: '[robotics]'
 
 templates:
   imports: from gnuradio import robotics
-  make: robotics.gpo_pwm(${platform-pi3}, ${gpio}, ${frequency})
+  make: robotics.gpo_pwm(${platform}, ${gpio_pin}, ${frequency})
 
 #  Make one 'parameters' list entry for every parameter you want settable from the GUI.
 #     Keys include:
@@ -13,13 +13,18 @@ templates:
 #     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
 #     * default
 parameters:
-- id: parametername_replace_me
-  label: FIX ME:
+- id: platform
+  label: Platform
   dtype: string
-  default: You need to fill in your grc/robotics_gpo_pwm.block.yaml
-#- id: ...
-#  label: ...
-#  dtype: ...
+  default: pi3
+- id: gpio_pin
+  label: Pin
+  dtype: int
+  default: 11
+- id: frequency
+  label: PWM Frequency
+  dtype: int
+  default: 100
 
 #  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
 #  Keys include:
@@ -29,13 +34,13 @@ parameters:
 #      * vlen (optional - data stream vector length. Default is 1)
 #      * optional (optional - set to 1 for optional inputs. Default is 0)
 inputs:
-#- label: ...
-#  domain: ...
-#  dtype: ...
-#  vlen: ...
-#  optional: ...
+- label: Pulse Width
+  domain: stream
+  dtype: float
+  vlen: 1
+  optional: 0
 
-outputs:
+#outputs:
 #- label: ...
 #  domain: ...
 #  dtype: ...
