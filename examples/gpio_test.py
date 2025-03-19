@@ -20,7 +20,6 @@ if __name__ == '__main__':
         except:
             print("Warning: failed to XInitThreads()")
 
-from gnuradio import blocks
 from gnuradio import gr
 from gnuradio.filter import firdes
 from gnuradio.fft import window
@@ -79,14 +78,12 @@ class gpio_test(gr.top_block, Qt.QWidget):
         ##################################################
         self.robotics_gpo_0 = robotics.gpo(11)
         self.robotics_gpi_0 = robotics.gpi('pi3', 13)
-        self.blocks_throttle_0 = blocks.throttle(gr.sizeof_int*1, samp_rate,True)
 
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.blocks_throttle_0, 0), (self.robotics_gpo_0, 0))
-        self.connect((self.robotics_gpi_0, 0), (self.blocks_throttle_0, 0))
+        self.connect((self.robotics_gpi_0, 0), (self.robotics_gpo_0, 0))
 
 
     def closeEvent(self, event):
@@ -102,7 +99,6 @@ class gpio_test(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.blocks_throttle_0.set_sample_rate(self.samp_rate)
 
 
 

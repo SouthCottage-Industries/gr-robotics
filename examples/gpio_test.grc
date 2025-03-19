@@ -1,0 +1,85 @@
+options:
+  parameters:
+    author: ''
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: gpio_test
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: Not titled yet
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '100'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 12]
+    rotation: 0
+    state: enabled
+- name: robotics_gpi_0
+  id: robotics_gpi
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    gpio_pin: '13'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    platform: pi3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [504, 316.0]
+    rotation: 0
+    state: true
+- name: robotics_gpo_0
+  id: robotics_gpo
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    gpio_pin: '11'
+    platform: pi3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [824, 296.0]
+    rotation: 0
+    state: true
+
+connections:
+- [robotics_gpi_0, '0', robotics_gpo_0, '0']
+
+metadata:
+  file_format: 1

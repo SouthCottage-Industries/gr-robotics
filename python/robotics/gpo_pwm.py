@@ -26,6 +26,11 @@ class gpo_pwm(gr.sync_block):
             name="gpo_pwm",
             in_sig=[numpy.float32, ],
             out_sig=None)
+        
+        global gpop
+        global freq
+        global pwm
+        
         gpop = gpio_pin
         freq = frequency
         GPIO.setmode(GPIO.BOARD)
@@ -40,6 +45,9 @@ class gpo_pwm(gr.sync_block):
     def work(self, input_items, output_items):
         in0 = input_items[0]
         
+        global pwm
+        global dc
+
         for x in in0:
             if x*100 != dc:
                 dc = x*100
