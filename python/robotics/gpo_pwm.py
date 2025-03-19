@@ -8,7 +8,7 @@
 
 
 import numpy
-import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO # type: ignore
 from gnuradio import gr
 
 gpop = 0
