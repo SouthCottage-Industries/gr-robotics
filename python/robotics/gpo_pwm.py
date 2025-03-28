@@ -11,47 +11,35 @@ import numpy
 import RPi.GPIO as GPIO # type: ignore
 from gnuradio import gr
 
-gpop = 0
-freq = 0
-dc = 0
-global pwm
-
-
 class gpo_pwm(gr.sync_block):
     """
     docstring for block gpo_pwm
     """
-    def __init__(self, platform="pi3", gpio_pin=11, frequency=100):
+    def __init__(self, platform="pi3", gpio_pin=11, frequency=100, dc=0):
         gr.sync_block.__init__(self,
             name="gpo_pwm",
             in_sig=[numpy.float32, ],
             out_sig=None)
         
-        global gpop
-        global freq
-        global pwm
-        
-        gpop = gpio_pin
-        freq = frequency
+        self.gpop = gpio_pin
+        self.freq = frequency
+        self.dc = dc
         GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(gpop, GPIO.OUT)
-        pwm = GPIO.PWM(gpop, freq)
-        pwm.start(dc)
+        GPIO.setup(self.gpop, GPIO.OUT)
+        self.pwm = GPIO.PWM(self.gpop, self.freq)
+        self.pwm.start(self.dc)
         
 
-    def change_frequency(new_freq):
-        freq = new_freq
+    def change_frequency(self,new_freq):
+        self.freq = new_freq
 
     def work(self, input_items, output_items):
         in0 = input_items[0]
-        
-        global pwm
-        global dc
 
         for x in in0:
-            if x*100 != dc:
-                dc = x*100
-                pwm.ChangeDutyCycle(dc)
+            if x*100 != self.dc:
+                self.dc = x*100
+                self.pwm.ChangeDutyCycle(self.dc)
             
 
         return len(input_items[0])

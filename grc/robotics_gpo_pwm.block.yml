@@ -25,6 +25,10 @@ parameters:
   label: PWM Frequency
   dtype: int
   default: 100
+- id: dc
+  label: Duty Cycle
+  dtype: int
+  default: 0
 
 #  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
 #  Keys include:
