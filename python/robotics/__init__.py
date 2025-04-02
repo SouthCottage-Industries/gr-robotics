@@ -24,4 +24,5 @@ except ModuleNotFoundError:
 from .gpi import gpi
 from .gpo_pwm import gpo_pwm
 from .gpo import gpo
+from .servo import servo
 #

@@ -8,5 +8,6 @@
 install(FILES
     robotics_gpi.block.yml
     robotics_gpo_pwm.block.yml
-    robotics_gpo.block.yml DESTINATION share/gnuradio/grc/blocks
+    robotics_gpo.block.yml
+    robotics_servo.block.yml DESTINATION share/gnuradio/grc/blocks
 )

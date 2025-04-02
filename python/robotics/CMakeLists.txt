@@ -24,7 +24,8 @@ GR_PYTHON_INSTALL(
     __init__.py
     gpi.py
     gpo_pwm.py
-    gpo.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/robotics
+    gpo.py
+    servo.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/robotics
 )
 
 ########################################################################
