@@ -695,7 +695,7 @@ class Stepper(gr.sync_block):
         self.pins = pins
         self.position = 0
         self.nextStep = 0
-        self.steps = [[1,0,0,0][0,1,0,0][0,0,1,0][0,0,0,1]]
+        self.steps = [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.pins, GPIO.OUT)
         self.t = 1/self.samp_rate
