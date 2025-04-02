@@ -707,7 +707,7 @@ class Stepper(gr.sync_block):
 
     def stepForward(self):
         self.nextStep = (self.nextStep + 1) % 4
-        GPIO.output(self.pins, self.steps(self.nextStep))
+        GPIO.output(self.pins, self.steps[self.nextStep])
 
         
 
@@ -715,7 +715,7 @@ class Stepper(gr.sync_block):
         self.nextStep = (self.nextStep - 1) % 4
         if self.nextStep == -1:
             self.nextStep = 3
-        GPIO.output(self.pins, self.steps(self.nextStep))
+        GPIO.output(self.pins, self.steps[self.nextStep])
 
 
     def work(self, input_items, output_items):
@@ -723,9 +723,9 @@ class Stepper(gr.sync_block):
         # <+signal processing here+>
         for i in in0:
             if(i > 0):
-                Stepper.stepForward()
+                Stepper.stepForward(self)
             if(i < 0):
-                Stepper.stepBackward()
+                Stepper.stepBackward(self)
         
         time.sleep(self.t)
         return len(input_items[0])
