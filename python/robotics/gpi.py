@@ -32,10 +32,14 @@ class gpi(gr.sync_block):
 
 
     def work(self, input_items, output_items):
+        out = output_items[0]
         # <+signal processing here+>
 
-        out = GPIO.input(self.gpip)
-        time.sleep(self.t)
-            
-            
-        return len(1)
+        i = 0
+        for x in out:
+            out[i] = GPIO.input(self.gpip)
+            i = i + 1
+            time.sleep(self.t)
+
+        print("GPI Output Items: " + len(output_items[0]))
+        return len(output_items[0])
