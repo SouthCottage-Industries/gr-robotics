@@ -28,7 +28,7 @@ class gpi(gr.sync_block):
         self.t = 1/samp_rate
 
         GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(gpi, GPIO.IN)
+        GPIO.setup(self.gpip, GPIO.IN)
 
 
     def work(self, input_items, output_items):
