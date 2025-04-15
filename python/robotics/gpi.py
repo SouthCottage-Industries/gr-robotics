@@ -35,18 +35,16 @@ class gpi(gr.sync_block):
         out = output_items[0]
         # <+signal processing here+>
 
-        print("GPI Output Items: " )
-        print(len(output_items[0]))
-
-        out = numpy.zeros(int(1/self.t))
-
-        print("Modified GPI Output Items: " )
-        print(len(out))
+        #This is the cleanest way I know to create a reasonable limit 
+        #   to the number of samples.
+        # TODO: find better way to limit output_item size for a given sample rate
+         
+        nout = int(1/self.t)
 
         i = 0
-        for x in out:
+        for x in range(nout):
             out[i] = GPIO.input(self.gpip)
             i = i + 1
             time.sleep(self.t)
 
-        return len(out)
+        return nout

@@ -53,6 +53,7 @@ class Stepper(gr.sync_block):
 
     def work(self, input_items, output_items):
         in0 = input_items[0]
+        
         # <+signal processing here+>
         for i in in0:
             if(i > 0):
