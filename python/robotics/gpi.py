@@ -38,7 +38,7 @@ class gpi(gr.sync_block):
         print("GPI Output Items: " )
         print(len(output_items[0]))
 
-        out = numpy.zeros(1/self.t)
+        out = numpy.zeros(int(1/self.t))
 
         print("Modified GPI Output Items: " )
         print(len(out))
