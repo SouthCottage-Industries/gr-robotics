@@ -23,7 +23,7 @@ class servo(gr.sync_block):
             out_sig=None)
         self.gpop = gpio_pin
         self.freq = frequency
-        self.duty_cycle = 0.075
+        self.duty_cycle = 2.5
         self.angle = 0
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.gpop, GPIO.OUT)
@@ -36,7 +36,8 @@ class servo(gr.sync_block):
     def set_angle(self, angle):
         if angle > 180 or angle < 0:
             return
-        self.duty_cycle = ((angle/180.0 * 2) + 0.5) / 20
+        self.duty_cycle = (((angle/180.0 * 2) + 0.5) / 20) * 100
+        print("angle = " + str(angle) + ". duty cycle = " + str(self.duty_cycle))
 
     def work(self, input_items, output_items):
         in0 = input_items[0]
