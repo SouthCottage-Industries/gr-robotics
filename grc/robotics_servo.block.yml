@@ -4,7 +4,7 @@ category: '[robotics]'
 
 templates:
   imports: from gnuradio import robotics
-  make: robotics.servo()
+  make: robotics.servo(${samp_rate}, ${gpio_pin}, ${frequency})
 
 #  Make one 'parameters' list entry for every parameter you want settable from the GUI.
 #     Keys include:

@@ -17,7 +17,7 @@ class servo(gr.sync_block):
     docstring for block gpo
     """
 
-    def __init__(self, samp_rate= 10, gpio_pin=12, frequency=50):
+    def __init__(self, samp_rate=10, gpio_pin=12, frequency=50):
         gr.sync_block.__init__(self,
             name="servo",
             in_sig=[numpy.int32, ],
