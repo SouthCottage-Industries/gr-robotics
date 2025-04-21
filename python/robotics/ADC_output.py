@@ -37,13 +37,13 @@ class ADC_output(gr.sync_block):
     def work(self, input_items, output_items):
         out = output_items[0]
 
-        nout = 1/self.t
+        nout = int(1/self.t)
 
         if(nout < 1):
             nout = 1
 
         i = 0
-        for x in out:
+        for x in range(nout):
             bus_output = self.i2c_bus.read_byte_data(self.i2c_addr, 1)
             out[i] = bus_output
             i = i + 1

@@ -13,6 +13,10 @@ templates:
 #     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
 #     * default
 parameters:
+- id: fs
+  label: Sample Rate
+  dtype: int
+  default: 10
 - id: chn
   label: Channel
   dtype: int
