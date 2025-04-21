@@ -27,6 +27,7 @@ GR_PYTHON_INSTALL(
     gpo.py
     Stepper.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/robotics
     servo.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/robotics
+    ADC_output.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/robotics
 )
 
 ########################################################################
