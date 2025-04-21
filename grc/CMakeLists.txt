@@ -10,4 +10,5 @@ install(FILES
     robotics_gpo_pwm.block.yml
     robotics_gpo.block.yml
     robotics_Stepper.block.yml DESTINATION share/gnuradio/grc/blocks
+    robotics_servo.block.yml DESTINATION share/gnuradio/grc/blocks
 )
