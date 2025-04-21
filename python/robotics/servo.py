@@ -10,17 +10,19 @@
 import numpy
 import RPi.GPIO as GPIO # type: ignore
 from gnuradio import gr
+import time
 
 class servo(gr.sync_block):
     """
     docstring for block gpo
     """
 
-    def __init__(self, gpio_pin=12, frequency=50):
+    def __init__(self, samp_rate= 10, gpio_pin=12, frequency=50):
         gr.sync_block.__init__(self,
             name="servo",
             in_sig=[numpy.int32, ],
             out_sig=None)
+        self.t = 1/samp_rate
         self.gpop = gpio_pin
         self.freq = frequency
         self.duty_cycle = 2.5
@@ -47,6 +49,7 @@ class servo(gr.sync_block):
                 self.angle = x
                 self.set_angle(self.angle)
                 self.pwm.ChangeDutyCycle(self.duty_cycle)
+                time.sleep(self.t)
                 
 
         return len(input_items[0])

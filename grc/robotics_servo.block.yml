@@ -13,6 +13,10 @@ templates:
 #     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
 #     * default
 parameters:
+- id: samp_rate
+  label: Sample Rate
+  dtype: int
+  default: 10
 - id: gpio_pin
   label: Pin
   dtype: int
