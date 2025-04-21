@@ -10,19 +10,22 @@
 import numpy
 import RPi.GPIO as GPIO # type: ignore
 from gnuradio import gr
+import time
 
 
 class gpi(gr.sync_block):
     """
     docstring for block gpi
     """
-    def __init__(self, platform="pi3", gpio_pin=11):
+    def __init__(self, platform="pi3", samp_rate = 10, gpio_pin=11):
         gr.sync_block.__init__(self,
             name="gpi",
             in_sig=None,
             out_sig=[numpy.int32, ])
 
         self.gpip = gpio_pin
+        self.t = 1/samp_rate
+
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.gpip, GPIO.IN)
 
@@ -31,9 +34,16 @@ class gpi(gr.sync_block):
         out = output_items[0]
         # <+signal processing here+>
 
+        #This is the cleanest way I know to create a reasonable limit 
+        #   to the number of samples.
+        # TODO: find better way to limit output_item size for a given sample rate
+         
+        nout = int(1/self.t)
+
         i = 0
-        for x in out:
+        for x in range(nout):
             out[i] = GPIO.input(self.gpip)
             i = i + 1
-            
-        return len(output_items[0])
+            time.sleep(self.t)
+
+        return nout
