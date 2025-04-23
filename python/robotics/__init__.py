@@ -27,4 +27,5 @@ from .gpo import gpo
 from .Stepper import Stepper
 from .servo import servo
 from .ADC_output import ADC_output
+from .ultrasonic_ranger import ultrasonic_ranger
 #

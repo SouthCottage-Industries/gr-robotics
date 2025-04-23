@@ -11,5 +11,6 @@ install(FILES
     robotics_gpo.block.yml
     robotics_Stepper.block.yml
     robotics_servo.block.yml
-    robotics_ADC_output.block.yml DESTINATION share/gnuradio/grc/blocks
+    robotics_ADC_output.block.yml
+    robotics_ultrasonic_ranger.block.yml DESTINATION share/gnuradio/grc/blocks
 )
