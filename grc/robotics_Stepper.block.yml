@@ -4,7 +4,7 @@ category: '[robotics]'
 
 templates:
   imports: from gnuradio import robotics
-  make: robotics.Stepper(${samp_rate}, ${pins}, ${11}, ${13}, ${15]})
+  make: robotics.Stepper(${samp_rate}, ${pins})
 
 #  Make one 'parameters' list entry for every parameter you want settable from the GUI.
 #     Keys include:
@@ -13,10 +13,14 @@ templates:
 #     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
 #     * default
 parameters:
-- id: parametername_replace_me
-  label: FIX ME:
-  dtype: string
-  default: You need to fill in your grc/robotics_Stepper.block.yaml
+- id: samp_rate
+  label: Sample Rate
+  dtype: int
+  default: 10
+- id: pins
+  label: Pins
+  dtype: int_vector
+  default: 7
 #- id: ...
 #  label: ...
 #  dtype: ...
@@ -29,13 +33,13 @@ parameters:
 #      * vlen (optional - data stream vector length. Default is 1)
 #      * optional (optional - set to 1 for optional inputs. Default is 0)
 inputs:
-#- label: ...
-#  domain: ...
-#  dtype: ...
-#  vlen: ...
-#  optional: ...
+- label: direction
+  domain: stream
+  dtype: int
+  vlen: 1
+  optional: 0
 
-outputs:
+#outputs:
 #- label: ...
 #  domain: ...
 #  dtype: ...
