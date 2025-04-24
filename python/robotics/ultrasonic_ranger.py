@@ -27,7 +27,8 @@ class ultrasonic_ranger(gr.sync_block):
         self.trig_pin = trig_pin
         self.echo_pin = echo_pin
         self.v_sound = 34000
-        self.max_dt = 800 / self.v_sound
+        self.s_to_ns = 1000000000
+        self.max_dt = self.s_to_ns * 800 / self.v_sound
         self.range = 0
 
         GPIO.setmode(GPIO.BOARD)
@@ -36,7 +37,7 @@ class ultrasonic_ranger(gr.sync_block):
 
     def update_v_sound_cmps(self, new_v):
         self.v_sound = new_v
-        self.max_dt = 800 / self.v_sound
+        self.max_dt = self.s_to_ns * 800 / self.v_sound
 
     def work(self, input_items, output_items):
         out = output_items[0]
@@ -62,20 +63,20 @@ class ultrasonic_ranger(gr.sync_block):
                 state = GPIO.input(self.echo_pin)
                 t2 = time.clock_gettime_ns(1)
 
-            if (t2 < t_end):
+            if (t2 > t_end):
                 self.range = 0
-            elif ( t2 < t1):
+            elif ( t2 <= t1):
                 self.range = 0
             else:
                 dt = t2 - t1
-                self.range = 34000 * dt / 2
+                self.range = 34000 * dt / (2 * self.s_to_ns)
 
         nout = int(1/self.t)
 
         i = 0
         for x in range(nout):
-            trig_thread = threading.Thread(target=trigger, args=self)
-            echo_thread = threading.Thread(target=echo, args=self)
+            trig_thread = threading.Thread(target=trigger, args=[self])
+            echo_thread = threading.Thread(target=echo, args=[self])
 
             trig_thread.start()
             echo_thread.start()
@@ -84,7 +85,7 @@ class ultrasonic_ranger(gr.sync_block):
             echo_thread.join()
 
             out[i] = self.range
-            print("Range = ", out[i])
+            #print("Range = ", out[i])
             i = i + 1
             time.sleep(self.t)
 
