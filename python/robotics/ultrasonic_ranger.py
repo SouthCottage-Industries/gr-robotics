@@ -38,46 +38,44 @@ class ultrasonic_ranger(gr.sync_block):
         self.v_sound = new_v
         self.max_dt = 800 / self.v_sound
 
-    def trigger(self):
-        GPIO.output(self.trig_pin, 1)
-        time.sleep(.00001)
-        GPIO.output(self.trig_pin, 0)
-    
-    def echo(self):
-        state = 0
-        t2 = 0
-        t1 = time.clock_gettime_ns(1)
-        t_end = t1 + self.max_dt
-        
-        while (state == 0 and t1 < t_end):
-            state = GPIO.input(self.echo_pin)
-            t1 = time.clock_gettime_ns(1)
-        
-        t_end = t1 + self.max_dt
-
-        while (state ==1 and t2 < t_end):
-            state = GPIO.input(self.echo_pin)
-            t2 = time.clock_gettime_ns(1)
-
-        if (t2 < t_end):
-            self.range = 0
-        elif ( t2 < t1):
-            self.range = 0
-        else:
-            dt = t2 - t1
-            self.range = 34000 * dt / 2
-
-
-
     def work(self, input_items, output_items):
         out = output_items[0]
         # <+signal processing here+>
+        def trigger(self):
+            GPIO.output(self.trig_pin, 1)
+            time.sleep(.00001)
+            GPIO.output(self.trig_pin, 0)
+        
+        def echo(self):
+            state = 0
+            t2 = 0
+            t1 = time.clock_gettime_ns(1)
+            t_end = t1 + self.max_dt
+            
+            while (state == 0 and t1 < t_end):
+                state = GPIO.input(self.echo_pin)
+                t1 = time.clock_gettime_ns(1)
+            
+            t_end = t1 + self.max_dt
+
+            while (state ==1 and t2 < t_end):
+                state = GPIO.input(self.echo_pin)
+                t2 = time.clock_gettime_ns(1)
+
+            if (t2 < t_end):
+                self.range = 0
+            elif ( t2 < t1):
+                self.range = 0
+            else:
+                dt = t2 - t1
+                self.range = 34000 * dt / 2
+
         nout = int(1/self.t)
 
         i = 0
         for x in range(nout):
-            trig_thread = threading.Thread(target=self.trigger, args=self)
-            echo_thread = threading.Thread(target=self.echo, args=self)
+            trig_thread = threading.Thread(target=trigger, args=self)
+            echo_thread = threading.Thread(target=echo, args=self)
 
             trig_thread.start()
             echo_thread.start()
