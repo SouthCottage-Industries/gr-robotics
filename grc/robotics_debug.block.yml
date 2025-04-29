@@ -17,7 +17,7 @@ parameters:
   label: Unique ID
   dtype: string
   default: Debug1
-- id: Debug
+- id: debug
   label: Active
   dtype: bool
   default: True

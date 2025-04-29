@@ -41,6 +41,9 @@ class r2mc(gr.top_block):
         ##################################################
         self.robotics_ultrasonic_ranger_0 = robotics.ultrasonic_ranger(samp_rate, 38, 40)
         self.robotics_gpo_pwm_0 = robotics.gpo_pwm('pi3', samp_rate, 13, 100)
+        self.robotics_debug_2 = robotics.debug('add const', True)
+        self.robotics_debug_1 = robotics.debug('mult const', True)
+        self.robotics_debug_0 = robotics.debug('subtract', True)
         self.blocks_sub_xx_0 = blocks.sub_ff(1)
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_ff((1-min_speed)/(max_range-min_range))
         self.blocks_add_const_vxx_0 = blocks.add_const_ff(min_speed)
@@ -53,9 +56,12 @@ class r2mc(gr.top_block):
         ##################################################
         self.connect((self.analog_const_source_x_0, 0), (self.blocks_sub_xx_0, 1))
         self.connect((self.analog_rail_ff_0, 0), (self.robotics_gpo_pwm_0, 0))
-        self.connect((self.blocks_add_const_vxx_0, 0), (self.analog_rail_ff_0, 0))
-        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.blocks_add_const_vxx_0, 0))
-        self.connect((self.blocks_sub_xx_0, 0), (self.blocks_multiply_const_vxx_0, 0))
+        self.connect((self.blocks_add_const_vxx_0, 0), (self.robotics_debug_2, 0))
+        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.robotics_debug_1, 0))
+        self.connect((self.blocks_sub_xx_0, 0), (self.robotics_debug_0, 0))
+        self.connect((self.robotics_debug_0, 0), (self.blocks_multiply_const_vxx_0, 0))
+        self.connect((self.robotics_debug_1, 0), (self.blocks_add_const_vxx_0, 0))
+        self.connect((self.robotics_debug_2, 0), (self.analog_rail_ff_0, 0))
         self.connect((self.robotics_ultrasonic_ranger_0, 0), (self.blocks_sub_xx_0, 0))
 
 
