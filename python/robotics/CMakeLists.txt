@@ -28,7 +28,8 @@ GR_PYTHON_INSTALL(
     Stepper.py
     ultrasonic_ranger.py 
     servo.py 
-    ADC_output.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/robotics
+    ADC_output.py
+    debug.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/robotics
 )
 
 ########################################################################

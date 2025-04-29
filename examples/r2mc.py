@@ -92,6 +92,8 @@ class r2mc(gr.top_block):
 
 
 def main(top_block_cls=r2mc, options=None):
+    if gr.enable_realtime_scheduling() != gr.RT_OK:
+        print("Error: failed to enable real-time scheduling.")
     tb = top_block_cls()
 
     def sig_handler(sig=None, frame=None):
