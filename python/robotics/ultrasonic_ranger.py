@@ -103,7 +103,7 @@ class ultrasonic_ranger(gr.sync_block):
             echo_thread.join()
 
             if (self.range > (self.mem + self.tol) or self.range < (self.mem - self.tol)):
-                self.message_port_pub(pmt.intern('Range (cm)'), pmt.from_long(self.range))
+                self.message_port_pub(pmt.intern('Range (cm)'), pmt.from_float(self.range))
 
             time.sleep(self.t)
 
