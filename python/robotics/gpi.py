@@ -39,10 +39,13 @@ class gpi(gr.sync_block):
         listen_thread = threading.Thread(target=self.listen, args=[])
         listen_thread.start()
     
+    def stop(self):
+        self.run = False
+    
     def listen(self):
         out = 0
         print("In Listen")
-        while True:
+        while self.run:
             tmp = GPIO.input(self.gpip)
             print("tmp = ", tmp)
             if(tmp != out):
