@@ -36,13 +36,15 @@ class gpi(gr.sync_block):
         self.message_port_register_in(pmt.intern('Set Fs'))
         self.set_msg_handler(pmt.intern('Set Fs'), self.change_frequency)
 
-        listen_thread = threading.Thread(target=self.listen, args=[self])
+        listen_thread = threading.Thread(target=self.listen, args=[])
         listen_thread.start()
     
     def listen(self):
         out = 0
+        print("In Listen")
         while True:
             tmp = GPIO.input(self.gpip)
+            print("tmp = ", tmp)
             if(tmp != out):
                 out = tmp
                 self.message_port_pub(pmt.intern('Out'), pmt.from_int(out))
