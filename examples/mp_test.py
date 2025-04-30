@@ -35,14 +35,16 @@ class mp_test(gr.top_block):
         ##################################################
         # Blocks
         ##################################################
-        self.robotics_gpo_0 = robotics.gpo(11)
-        self.robotics_gpi_0 = robotics.gpi('pi3', 1, 7)
+        self.robotics_ultrasonic_ranger_0 = robotics.ultrasonic_ranger(samp_rate, 38, 40, 1)
+        self.robotics_gpo_pwm_0 = robotics.gpo_pwm('pi3', samp_rate, 13, 100)
+        self.robotics_conditioning_0 = robotics.conditioning(False, '3.75(X-5)+25')
 
 
         ##################################################
         # Connections
         ##################################################
-        self.msg_connect((self.robotics_gpi_0, 'Out'), (self.robotics_gpo_0, 'In'))
+        self.msg_connect((self.robotics_conditioning_0, 'Out'), (self.robotics_gpo_pwm_0, 'Set DC'))
+        self.msg_connect((self.robotics_ultrasonic_ranger_0, 'Range (cm)'), (self.robotics_conditioning_0, 'In'))
 
 
     def get_samp_rate(self):
