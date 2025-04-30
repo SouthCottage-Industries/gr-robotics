@@ -36,8 +36,8 @@ class mp_test(gr.top_block):
         # Blocks
         ##################################################
         self.robotics_ultrasonic_ranger_0 = robotics.ultrasonic_ranger(samp_rate, 38, 40, 1)
-        self.robotics_gpo_pwm_0 = robotics.gpo_pwm('pi3', samp_rate, 13, 100)
-        self.robotics_conditioning_0 = robotics.conditioning(False, '3.75(X-5)+25')
+        self.robotics_gpo_pwm_0 = robotics.gpo_pwm('pi3', 13, 100, 0)
+        self.robotics_conditioning_0 = robotics.conditioning(False, '3.75(X-5)+25', 'Float', 'Int')
 
 
         ##################################################

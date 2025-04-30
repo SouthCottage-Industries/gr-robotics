@@ -4,7 +4,7 @@ category: '[robotics]'
 
 templates:
   imports: from gnuradio import robotics
-  make: robotics.gpo_pwm(${platform}, ${samp_rate}, ${gpio_pin}, ${frequency})
+  make: robotics.gpo_pwm(${platform}, ${gpio_pin}, ${frequency}, ${dc})
 
 #  Make one 'parameters' list entry for every parameter you want settable from the GUI.
 #     Keys include:
@@ -17,10 +17,6 @@ parameters:
   label: Platform
   dtype: string
   default: pi3
-- id: samp_rate
-  label: Sample Rate
-  dtype: int
-  default: 10
 - id: gpio_pin
   label: Pin
   dtype: int
