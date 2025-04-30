@@ -32,10 +32,8 @@ parameters:
 #      * optional (optional - set to 1 for optional inputs. Default is 0)
 inputs:
 - label: In
-  domain: stream
-  dtype: int
-  vlen: 1
-  optional: 0
+  domain: message
+  optional: 1
 
 #outputs:
 #- label: ...

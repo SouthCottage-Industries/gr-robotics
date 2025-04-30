@@ -10,6 +10,7 @@
 import numpy
 import RPi.GPIO as GPIO # type: ignore
 from gnuradio import gr
+import pmt
 
 class gpo(gr.sync_block):
     """
@@ -27,11 +28,17 @@ class gpo(gr.sync_block):
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.gpop, GPIO.OUT)
 
+        self.message_port_register_in(pmt.intern('In'))
+        self.set_msg_handler(pmt.intern('In'), self.handle_in)
 
-    def work(self, input_items, output_items):
+    def handle_in(self, msg):
+        if(pmt.is_int(msg)):
+            GPIO.output(self.gpop, pmt.to_int(msg))
+
+    '''def work(self, input_items, output_items):
         in0 = input_items[0]
 
         for x in in0:
             GPIO.output(self.gpop, x)
 
-        return len(input_items[0])
+        return len(input_items[0])'''

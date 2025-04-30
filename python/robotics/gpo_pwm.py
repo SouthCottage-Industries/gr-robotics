@@ -10,13 +10,12 @@
 import numpy
 import RPi.GPIO as GPIO # type: ignore
 from gnuradio import gr
-import time
 
 class gpo_pwm(gr.sync_block):
     """
     docstring for block gpo_pwm
     """
-    def __init__(self, platform="pi3", samp_rate = 10, gpio_pin=11, frequency=100, dc=0):
+    def __init__(self, platform="pi3", gpio_pin=11, frequency=100, dc=0):
         gr.sync_block.__init__(self,
             name="gpo_pwm",
             in_sig=[numpy.float32, ],
@@ -29,7 +28,6 @@ class gpo_pwm(gr.sync_block):
         GPIO.setup(self.gpop, GPIO.OUT)
         self.pwm = GPIO.PWM(self.gpop, self.freq)
         self.pwm.start(self.dc)
-        self.t = 1/samp_rate
         
 
     def change_frequency(self,new_freq):
@@ -42,7 +40,6 @@ class gpo_pwm(gr.sync_block):
             if x*100 != self.dc:
                 self.dc = x*100
                 self.pwm.ChangeDutyCycle(self.dc)
-                time.sleep(self.t)
             
 
         return len(input_items[0])
