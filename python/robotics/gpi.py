@@ -12,6 +12,7 @@ import RPi.GPIO as GPIO # type: ignore
 from gnuradio import gr
 import time
 import pmt
+import threading
 
 
 class gpi(gr.sync_block):
@@ -26,6 +27,7 @@ class gpi(gr.sync_block):
 
         self.gpip = gpio_pin
         self.t = 1/samp_rate
+        self.run = True
 
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.gpip, GPIO.IN)
@@ -33,7 +35,8 @@ class gpi(gr.sync_block):
         self.message_port_register_out(pmt.intern('Out'))
         self.message_port_register_in(pmt.intern('Set Fs'))
         self.set_msg_handler(pmt.intern('Set Fs'), self.change_frequency)
-   
+
+           
     
     def listen(self):
         out = 0
@@ -47,6 +50,18 @@ class gpi(gr.sync_block):
     def change_frequency(self, msg):
         if(pmt.is_int(msg)):
             self.t = 1/pmt.to_int(msg)
+
+    def stop(self):
+        self.run = False
+    
+    def run(self):
+        out = 0
+        while self.run:
+            tmp = GPIO.input(self.gpip)
+            if(tmp != out):
+                out = tmp
+                self.message_port_pub(pmt.intern('Out'), pmt.from_int(out))
+            time.sleep(self.t)
 
     '''def work(self, input_items, output_items):
         out = output_items[0]
