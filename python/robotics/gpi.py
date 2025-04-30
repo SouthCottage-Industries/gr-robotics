@@ -47,12 +47,12 @@ class gpi(gr.sync_block):
             print("tmp = ", tmp)
             if(tmp != out):
                 out = tmp
-                self.message_port_pub(pmt.intern('Out'), pmt.from_int(out))
+                self.message_port_pub(pmt.intern('Out'), pmt.from_long(out))
             time.sleep(self.t)
 
     def change_frequency(self, msg):
-        if(pmt.is_int(msg)):
-            self.t = 1/pmt.to_int(msg)
+        if(pmt.is_long(msg)):
+            self.t = 1/pmt.to_long(msg)
 
     '''def work(self, input_items, output_items):
         out = output_items[0]

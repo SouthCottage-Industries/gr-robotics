@@ -32,8 +32,8 @@ class gpo(gr.sync_block):
         self.set_msg_handler(pmt.intern('In'), self.handle_in)
 
     def handle_in(self, msg):
-        if(pmt.is_int(msg)):
-            GPIO.output(self.gpop, pmt.to_int(msg))
+        if(pmt.is_long(msg)):
+            GPIO.output(self.gpop, pmt.to_long(msg))
 
     '''def work(self, input_items, output_items):
         in0 = input_items[0]
