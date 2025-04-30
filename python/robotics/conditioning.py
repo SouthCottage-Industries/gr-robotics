@@ -15,7 +15,7 @@ class conditioning(gr.sync_block):
     """
     docstring for block conditioning
     """
-    def __init__(self, debug = False, expression = "X"):
+    def __init__(self, debug = False, expression = "X", data_in = "Float", data_out = "Int"):
         gr.sync_block.__init__(self,
             name="conditioning",
             in_sig=None,
@@ -26,6 +26,8 @@ class conditioning(gr.sync_block):
         else:
             self.expr = "X"
         
+        self.d_in = data_in
+        self.d_out = data_out
         self.dbg = debug
         
         self.message_port_register_out(pmt.intern('Out'))
@@ -43,11 +45,20 @@ class conditioning(gr.sync_block):
 
 
     def condition(self, msg):
-        X = pmt.to_long(msg)
+
+        if(self.d_in == "Int"):
+            X = pmt.to_long(msg)
+        elif(self.d_in == "Float"):
+            X = pmt.to_float(msg)
+        else:
+            X = 0
 
         out = eval(self.expr)
 
         if(self.dbg):
             print("Input = ", msg, " Output = ", out)
 
-        self.message_port_pub(pmt.intern('Out'), pmt.from_long(out))
+        if(self.d_out == "Int"):
+            self.message_port_pub(pmt.intern('Out'), pmt.from_long(int(out)))
+        elif(self.d_out == "Float"):
+            self.message_port_pub(pmt.intern('Out'), pmt.from_float(float(out)))

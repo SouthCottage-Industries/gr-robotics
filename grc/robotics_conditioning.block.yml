@@ -4,7 +4,7 @@ category: '[robotics]'
 
 templates:
   imports: from gnuradio import robotics
-  make: robotics.conditioning(${debug}, ${expression})
+  make: robotics.conditioning(${debug}, ${expression}, ${data_in}, ${data_out})
 
 #  Make one 'parameters' list entry for every parameter you want settable from the GUI.
 #     Keys include:
@@ -21,6 +21,18 @@ parameters:
   label: Expression
   dtype: string
   default: "X"
+- id: data_in
+  label: Input Data Type
+  dtype: string
+  default: "Float"
+  options: ["Float", "Int"]
+  option_labels: ["Float", "Int"]
+- id: data_out
+  label: Output Data Type
+  dtype: string
+  default: "Int"
+  options: ["Float", "Int"]
+  option_labels: ["Float", "Int"]
 #- id: ...
 #  label: ...
 #  dtype: ...
