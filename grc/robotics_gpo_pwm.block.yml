@@ -42,11 +42,12 @@ parameters:
 #      * vlen (optional - data stream vector length. Default is 1)
 #      * optional (optional - set to 1 for optional inputs. Default is 0)
 inputs:
-- label: Pulse Width
-  domain: stream
-  dtype: float
-  vlen: 1
-  optional: 0
+- label: Set DC
+  domain: message
+  optional: 1
+- label: Set Freq
+  domain: message
+  optional: 1
 
 #outputs:
 #- label: ...

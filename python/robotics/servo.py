@@ -20,7 +20,7 @@ class servo(gr.sync_block):
     def __init__(self, samp_rate=10, gpio_pin=12, frequency=50):
         gr.sync_block.__init__(self,
             name="servo",
-            in_sig=[numpy.int32, ],
+            in_sig=None,
             out_sig=None)
         self.t = 1/samp_rate
         self.gpop = gpio_pin
@@ -31,25 +31,22 @@ class servo(gr.sync_block):
         GPIO.setup(self.gpop, GPIO.OUT)
         self.pwm = GPIO.PWM(self.gpop, self.freq)
         self.pwm.start(self.duty_cycle)
+
+        self.message_port_register_in(pmt.intern('Set Angle'))
+        self.set_msg_handler(pmt.intern('Set Angle'), self.set_angle)
+
+        self.message_port_register_in(pmt.intern('Set Freq'))
+        self.set_msg_handler(pmt.intern('Set Freq'), self.change_frequency)
         
-    def change_frequency(self,new_freq):
-        self.freq = new_freq
+    def change_frequency(self,msg):
+        self.freq = pmt.to_long(msg)
+        self.pwm = GPIO.PWM(self.gpop, self.freq)
         
-    def set_angle(self, angle):
+    def set_angle(self, msg):
+        angle = pmt.to_long(msg)
+
         if angle > 180 or angle < 0:
             return
         self.duty_cycle = (((angle/180.0 * 2) + 0.5) / 20) * 100
         print("angle = " + str(angle) + ". duty cycle = " + str(self.duty_cycle))
-
-    def work(self, input_items, output_items):
-        in0 = input_items[0]
-
-        for x in in0:
-            if x != self.angle:
-                self.angle = x
-                self.set_angle(self.angle)
-                self.pwm.ChangeDutyCycle(self.duty_cycle)
-                time.sleep(self.t)
-                
-
-        return len(input_items[0])
+        self.pwm.ChangeDutyCycle(self.duty_cycle)

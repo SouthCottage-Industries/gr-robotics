@@ -12,36 +12,57 @@ import RPi.GPIO as GPIO # type: ignore
 from gnuradio import gr
 import time
 import threading
+import pmt
 
 class ultrasonic_ranger(gr.sync_block):
     """
     docstring for block ultrasonic_ranger
     """
-    def __init__(self, samp_rate = 10, trig_pin = 7, echo_pin = 11):
+    def __init__(self, samp_rate = 10, trig_pin = 7, echo_pin = 11, tolerance=1):
         gr.sync_block.__init__(self,
             name="ultrasonic_ranger",
             in_sig=None,
-            out_sig=[numpy.float32, ])
+            out_sig=None)
         
         self.t = 1/samp_rate
         self.trig_pin = trig_pin
         self.echo_pin = echo_pin
+
+        #speed of sound & conversion data for calculating range
         self.v_sound = 34000
         self.s_to_ns = 1000000000
         self.max_dt = self.s_to_ns * 800 / self.v_sound
+
+        #variables to hold current measurement (range), past measurement (mem),
+        # and tolerance (how large of a change is required to send out a new range)
         self.range = 0
+        self.mem = 0
+        self.tol = tolerance
+        self.run = True
 
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.trig_pin, GPIO.OUT)
         GPIO.setup(self.echo_pin, GPIO.IN)
 
+        self.message_port_register_out(pmt.intern('Range (cm)'))
+        self.message_port_register_in(pmt.intern('Set Fs'))
+        self.set_msg_handler(pmt.intern('Set Fs'), self.change_frequency)
+
+        dist_thread = threading.Thread(target=self.dist, args=[])
+        dist_thread.start()
+
     def update_v_sound_cmps(self, new_v):
         self.v_sound = new_v
         self.max_dt = self.s_to_ns * 800 / self.v_sound
 
-    def work(self, input_items, output_items):
-        out = output_items[0]
-        # <+signal processing here+>
+    def stop(self):
+        self.run = False
+
+    def change_frequency(self, msg):
+        self.t = 1/pmt.to_long(msg)
+
+    def dist(self):
+        
         def trigger(self):
             GPIO.output(self.trig_pin, 1)
             time.sleep(.00001)
@@ -64,17 +85,14 @@ class ultrasonic_ranger(gr.sync_block):
                 t2 = time.clock_gettime_ns(1)
 
             if (t2 > t_end):
-                self.range = 0
+                self.range = -1
             elif ( t2 <= t1):
                 self.range = 0
             else:
                 dt = t2 - t1
                 self.range = 34000 * dt / (2 * self.s_to_ns)
 
-        nout = int(1/self.t)
-
-        i = 0
-        for x in range(nout):
+        while self.run:
             trig_thread = threading.Thread(target=trigger, args=[self])
             echo_thread = threading.Thread(target=echo, args=[self])
 
@@ -84,9 +102,8 @@ class ultrasonic_ranger(gr.sync_block):
             trig_thread.join()
             echo_thread.join()
 
-            out[i] = self.range
-            #print("Range = ", out[i])
-            i = i + 1
+            if (self.range > (self.mem + self.tol) or self.range < (self.mem - self.tol)):
+                self.message_port_pub(pmt.intern('Range (cm)'), pmt.from_long(self.range))
+
             time.sleep(self.t)
 
-        return len(output_items[0])

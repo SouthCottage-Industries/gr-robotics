@@ -54,8 +54,7 @@ class gpi(gr.sync_block):
             time.sleep(self.t)
 
     def change_frequency(self, msg):
-        if(pmt.is_long(msg)):
-            self.t = 1/pmt.to_long(msg)
+        self.t = 1/pmt.to_long(msg)
 
     '''def work(self, input_items, output_items):
         out = output_items[0]

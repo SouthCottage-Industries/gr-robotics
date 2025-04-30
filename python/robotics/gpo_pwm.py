@@ -10,6 +10,8 @@
 import numpy
 import RPi.GPIO as GPIO # type: ignore
 from gnuradio import gr
+import threading
+import pmt
 
 class gpo_pwm(gr.sync_block):
     """
@@ -18,7 +20,7 @@ class gpo_pwm(gr.sync_block):
     def __init__(self, platform="pi3", gpio_pin=11, frequency=100, dc=0):
         gr.sync_block.__init__(self,
             name="gpo_pwm",
-            in_sig=[numpy.float32, ],
+            in_sig=None,
             out_sig=None)
         
         self.gpop = gpio_pin
@@ -28,18 +30,26 @@ class gpo_pwm(gr.sync_block):
         GPIO.setup(self.gpop, GPIO.OUT)
         self.pwm = GPIO.PWM(self.gpop, self.freq)
         self.pwm.start(self.dc)
+
+        self.message_port_register_in(pmt.intern('Set DC'))
+        self.set_msg_handler(pmt.intern('Set DC'), self.set_dc)
+
+        self.message_port_register_in(pmt.intern('Set Freq'))
+        self.set_msg_handler(pmt.intern('Set Freq'), self.change_frequency)
         
 
-    def change_frequency(self,new_freq):
-        self.freq = new_freq
+    def change_frequency(self,msg):
+        self.freq = pmt.to_long(msg)
+        self.pwm.stop()
+        self.pwm = GPIO.PWM(self.gpop, self.freq)
+        self.pwm.start(self.dc)
 
-    def work(self, input_items, output_items):
-        in0 = input_items[0]
+    def set_dc(self, msg):
+        
+        x = pmt.to_long(msg)
 
-        for x in in0:
-            if x*100 != self.dc:
-                self.dc = x*100
+        if (0 <= x <=100):
+            if x != self.dc:
+                self.dc = x
                 self.pwm.ChangeDutyCycle(self.dc)
             
-
-        return len(input_items[0])
