@@ -9,8 +9,6 @@
 # Author: emane
 # GNU Radio version: 3.10.1.1
 
-from gnuradio import blocks
-import pmt
 from gnuradio import gr
 from gnuradio.filter import firdes
 from gnuradio.fft import window
@@ -38,13 +36,13 @@ class conveyer(gr.top_block):
         # Blocks
         ##################################################
         self.robotics_gpo_0 = robotics.gpo(37)
-        self.blocks_message_strobe_0 = blocks.message_strobe(pmt.from_long(1), 1000)
+        self.robotics_gpi_0 = robotics.gpi('pi3', 10, 11)
 
 
         ##################################################
         # Connections
         ##################################################
-        self.msg_connect((self.blocks_message_strobe_0, 'strobe'), (self.robotics_gpo_0, 'In'))
+        self.msg_connect((self.robotics_gpi_0, 'Out'), (self.robotics_gpo_0, 'In'))
 
 
     def get_samp_rate(self):
