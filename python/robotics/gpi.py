@@ -22,7 +22,7 @@ class gpi(gr.sync_block):
         gr.sync_block.__init__(self,
             name="gpi",
             in_sig=None,
-            out_sig=[numpy.int32, ])
+            out_sig=None)
 
         self.gpip = gpio_pin
         self.t = 1/samp_rate

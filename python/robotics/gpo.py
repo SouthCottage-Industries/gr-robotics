@@ -21,7 +21,7 @@ class gpo(gr.sync_block):
     #def __init__(self, gpio_pin=11):
         gr.sync_block.__init__(self,
             name="gpio",
-            in_sig=[numpy.int32, ],
+            in_sig=None,
             out_sig=None)
         
         self.gpop = gpio_pin
