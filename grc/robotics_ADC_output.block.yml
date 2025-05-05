@@ -45,8 +45,8 @@ parameters:
 
 outputs:
 - label: Out
-  domain: stream
-  dtype: float
+  domain: message
+  optional: 1
 
 #  'file_format' specifies the version of the GRC yml format used in the file
 #  and should usually not be changed.
