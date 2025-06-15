@@ -1,0 +1,14 @@
+[UNIT]
+Description=Runs wall following gr-robotics file
+After=network.target
+StartLimitIntervalSec=0
+
+[SERVICE]
+Type=simple
+Restart=always
+RestartSec=5
+User=pi
+ExecStart:/usr/bin/env python3 /home/pi/gr-robotics/examples/wall_follow.py 
+
+[INSTALL]
+WantedBy:multi-user.target
