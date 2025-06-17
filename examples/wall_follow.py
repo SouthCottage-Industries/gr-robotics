@@ -40,14 +40,17 @@ class mp_test(gr.top_block):
         self.robotics_ultrasonic_ranger_0 = robotics.ultrasonic_ranger(samp_rate, 38, 40, 1)
         self.robotics_gpo_pwm_0_0 = robotics.gpo_pwm('pi3', 15, 100, 50)
         self.robotics_gpo_pwm_0 = robotics.gpo_pwm('pi3', 13, 100, 50)
-        self.robotics_conditioning_0 = robotics.conditioning(False, '3.75(X-5)+25', 'Float', 'Int')
+        self.robotics_conditioning_0 = robotics.conditioning(False, '3.75*(X-5)+25', 'Float', 'Int', 5, 100)
+        self.robotics_conditioning_1 = robotics.conditioning(False, '100-3.75*(X-5)', 'Float', 'Int', 5, 100)
 
 
         ##################################################
         # Connections
         ##################################################
         self.msg_connect((self.robotics_conditioning_0, 'Out'), (self.robotics_gpo_pwm_0, 'Set DC'))
+        self.msg_connect((self.robotics_conditioning_1, 'Out'), (self.robotics_gpo_pwm_0_0, 'Set DC'))
         self.msg_connect((self.robotics_ultrasonic_ranger_0, 'Range (cm)'), (self.robotics_conditioning_0, 'In'))
+        self.msg_connect((self.robotics_ultrasonic_ranger_0, 'Range (cm)'), (self.robotics_conditioning_1, 'In'))
 
 
     def get_samp_rate(self):
