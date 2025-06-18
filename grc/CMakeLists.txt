@@ -14,5 +14,6 @@ install(FILES
     robotics_ADC_output.block.yml
     robotics_ultrasonic_ranger.block.yml
     robotics_debug.block.yml
-    robotics_conditioning.block.yml DESTINATION share/gnuradio/grc/blocks
+    robotics_conditioning.block.yml
+    robotics_LCD_display.block.yml DESTINATION share/gnuradio/grc/blocks
 )

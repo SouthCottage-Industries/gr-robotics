@@ -30,7 +30,8 @@ GR_PYTHON_INSTALL(
     servo.py 
     ADC_output.py
     debug.py
-    conditioning.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/robotics
+    conditioning.py
+    LCD_display.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/robotics
 )
 
 ########################################################################
