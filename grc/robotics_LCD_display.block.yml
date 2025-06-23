@@ -13,13 +13,18 @@ templates:
 #     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
 #     * default
 parameters:
-- id: parametername_replace_me
-  label: FIX ME:
+- id: samp_rate
+  label: Sample Rate
+  dtype: int
+  default: 10
+- id: i2c_addr
+  label: I2C Address
+  dtype: int
+  default: 0x27
+- id: string_in
+  label: Input String
   dtype: string
-  default: You need to fill in your grc/robotics_LCD_display.block.yaml
-#- id: ...
-#  label: ...
-#  dtype: ...
+  default: "Hello World"
 
 #  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
 #  Keys include:
