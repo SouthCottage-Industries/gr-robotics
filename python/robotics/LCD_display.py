@@ -15,6 +15,15 @@ from gnuradio import gr
 import threading
 import pmt
 
+#set modes--sets rw and rs pins
+READ_MODE  = 0x03
+WRITE_MODE = 0x01
+CMD_MODE   = 0x00
+
+LCD_BACKLIGHT = 0x08
+EN_DELAY      = 0.0005
+ENABLE        = 0x04
+
 class LCD_display(gr.sync_block):
     """
     docstring for block LCD_display
@@ -39,16 +48,35 @@ class LCD_display(gr.sync_block):
     def stop(self):
         self.run = False
         
-    def putChar(char):
-        self.i2c_bus.write_word_data(self.i2c_addr, 1, char)
+    def toggle_enable(self, bits):
+        time.sleep(EN_DELAY)
+        self.i2c_bus.write_byte_data(self.i2c_addr, 0, (bits | ENABLE))
+        time.sleep(EN_DELAY)
+        self.i2c_bus.write_byte_data(self.i2c_addr, 0, (bits & ~ENABLE))
+        time.sleep(EN_DELAY)
         
-    def put_string(str):
-        for i in str.length():
-            putChar(str(i))
+    def write_byte(self, data, mode):
+        bits_high = (data & 0xF0) | LCD_BACKLIGHT | mode
+        bits_low = ((data<<4) & 0xF0) | LCD_BACKLIGHT | mode
+        self.i2c_bus.write_byte_data(self.i2c_addr, 0, bits_high) #write first 4 bits
+        self.toggle_enable(bits_high)
+        self.i2c_bus.write_byte_data(self.i2c_addr, 0, bits_low) #write last 4 bits
+        self.toggle_enable(bits_low)
+        
+    def put_string(self, string):
+        for char in string:
+            self.write_byte(ord(char), WRITE_MODE)
         
     def print_message(self, msg):
-        if msg == null:
+        if msg == None:
             return
+        #initialize LCD
+        self.write_byte(0x33, CMD_MODE)
+        self.write_byte(0x32, CMD_MODE)
+        self.write_byte(0x06, CMD_MODE)
+        self.write_byte(0x0C, CMD_MODE)
+        self.write_byte(0x28, CMD_MODE)
+        self.write_byte(0x01, CMD_MODE)
         self.put_string(msg)
         print("message = " + msg)
         
